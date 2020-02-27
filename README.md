@@ -34,8 +34,6 @@ run file: Colorization_training.py
 
 run file: Colorization_loadModel.py  
 
-##### Process logic:  
-
 The python file will load saved model and weights, then colorize the images in test folder.
 
 
@@ -47,6 +45,6 @@ The python file will load saved model and weights, then colorize the video.
 
 ##### Process logic:  
 
-  First, dissect video file into frames (images) and save them.  
-  Then colorize the images by using the pre-trained model.  
-  Last, put the frames together as a video.  
+  - First, dissect video file into frames (images) and save them.  
+  - Then colorize the images by using the pre-trained model.  
+  - Last, put the frames together as a video.  
