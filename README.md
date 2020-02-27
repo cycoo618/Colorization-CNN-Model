@@ -18,7 +18,7 @@ run file: Colorization_training.py
       - A: from green to red  
       - B: from blue to yellow  
 
-[wikipedia link ref](https://en.wikipedia.org/wiki/CIELAB_color_space)  
+[Find more info about CIELAB at wikipedia ref](https://en.wikipedia.org/wiki/CIELAB_color_space)  
 
   1.3 Normalize and reshape the Data  
 
