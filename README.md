@@ -7,6 +7,8 @@ For each of the .py file, there is equivalent jupyter notebook file, which is an
 ### I. Training:  
 run file: Colorization_training.py  
 
+##### Process logic:  
+
 #### 1. Data Process: CIELAB  
   1.1 Download images from [Unsample.net](Unsample.net)  
 
