@@ -7,6 +7,7 @@ file: Colorization_training.py
 
 1. Data Process: CIELAB  
   1.1 Download images from Unsample.net
+
   1.2 Use CIELAB method to convert RGB data to LAB data.  
 
       L: lightness  
@@ -19,9 +20,8 @@ file: Colorization_training.py
 
       X: use L as input  
       Y: use A and B as target  
-
       Normalize the Y by Y/128 before training  
-
+  
 2. Build Model: CNN  
 3. Colorize the test images  
 4. Save model and weights  
