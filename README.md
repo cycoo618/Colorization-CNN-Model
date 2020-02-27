@@ -1,6 +1,8 @@
 # Colorization-CNN-Model  
 
-## Use CNN to colorize black and white images/videos  
+## Use CNN to colorize black and white images/videos
+
+For each of the .py file, there is equivalent jupyter notebook file, which is an easy and quick way to explore
 
 ### I. Training:  
 file: Colorization_training.py  
