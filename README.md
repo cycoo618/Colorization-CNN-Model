@@ -6,7 +6,7 @@ I. Training:
 file: Colorization_training.py  
 
 1. Data Process: CIELAB  
-  1.1 Download images from Unsample.net
+  1.1 Download images from Unsample.net  
 
   1.2 Use CIELAB method to convert RGB data to LAB data.  
 
@@ -15,7 +15,7 @@ file: Colorization_training.py
       B: from blue to yellow  
 
     wikipedia link: https://en.wikipedia.org/wiki/CIELAB_color_space  
-    
+
   1.3 Normalize and reshape the Data  
 
       X: use L as input  
