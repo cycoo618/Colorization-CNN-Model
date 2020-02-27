@@ -2,13 +2,13 @@
 
 ## Use CNN to colorize black and white images/videos
 
-For each of the .py file, there is equivalent jupyter notebook file, which is an easy and quick way to explore
+For each of the .py file, there is equivalent jupyter notebook file, which is an easy and quick way to explore.
 
 ### I. Training:  
-file: Colorization_training.py  
+run file: Colorization_training.py  
 
 #### 1. Data Process: CIELAB  
-  1.1 Download images from Unsample.net  
+  1.1 Download images from [Unsample.net](Unsample.net)  
 
   1.2 Use CIELAB method to convert RGB data to LAB data.  
 
@@ -16,7 +16,7 @@ file: Colorization_training.py
       - A: from green to red  
       - B: from blue to yellow  
 
-    wikipedia link: https://en.wikipedia.org/wiki/CIELAB_color_space  
+    [wikipedia link ref](https://en.wikipedia.org/wiki/CIELAB_color_space)  
 
   1.3 Normalize and reshape the Data  
 
@@ -30,12 +30,20 @@ file: Colorization_training.py
 
 ### II. Colorize images with pre-trained model:  
 
-  file: Colorization_loadModel.py  
+run file: Colorization_loadModel.py  
+
+##### Process logic:  
+
+The python file will load saved model and weights, then colorize the images in test folder.
 
 
 ### III. Colorize videos with pre-trained model:  
 
-  file: Colorization_video.py  
+run file: Colorization_video.py  
+
+The python file will load saved model and weights, then colorize the video.
+
+##### Process logic:  
 
   First, dissect video file into frames (images) and save them.  
   Then colorize the images by using the pre-trained model.  
