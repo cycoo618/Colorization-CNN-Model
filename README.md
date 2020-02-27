@@ -12,11 +12,14 @@ file: Colorization_training.py
       L: lightness  
       A: from green to red  
       B: from blue to yellow  
+
     wikipedia link: https://en.wikipedia.org/wiki/CIELAB_color_space  
+
   1.3 Normalize and reshape the Data  
 
       X: use L as input  
       Y: use A and B as target  
+
       Normalize the Y by Y/128 before training  
 
 2. Build Model: CNN  
@@ -26,6 +29,7 @@ file: Colorization_training.py
 II. Colorize images with pre-trained model:  
 
   file: Colorization_loadModel.py  
+
 
 III. Colorize videos with pre-trained model:  
 
