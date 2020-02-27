@@ -15,13 +15,13 @@ file: Colorization_training.py
       B: from blue to yellow  
 
     wikipedia link: https://en.wikipedia.org/wiki/CIELAB_color_space  
-
+    
   1.3 Normalize and reshape the Data  
 
       X: use L as input  
       Y: use A and B as target  
       Normalize the Y by Y/128 before training  
-  
+
 2. Build Model: CNN  
 3. Colorize the test images  
 4. Save model and weights  
