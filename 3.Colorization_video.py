@@ -31,12 +31,13 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 # =============================================================================
 ### a. For Windows
 path=".images\\60-80"
-model_path = path+"\\predict\\"
+model_path = path+"\\saved model\\"
+
 
 ### b. For Mac OS
-# path=".images/60-80"
-# test_path=path+"/test/"
-# model_path=path+"/predict/"
+# path="images/60-80"
+# model_path=path+"/saved model/"
+
 
 # =============================================================================
 # 1.2 Some Functions
@@ -49,16 +50,19 @@ def rgbtolab_batch(path):
     X=[]
     Y=[]
     j=1
+    row=[]
+    column=[]
     image = []
-    files = [f for f in os.listdir(path) if isfile(join(path, f))]
+    files = [f for f in os.listdir(path) if isfile(join(path, f)) and f.endswith(".jpg")==True]
     #for sorting the file names properly
     files.sort(key = lambda x: int(x[5:-4]))
     for i in range(len(files)):
         filename=path + files[i]
         image = img_to_array(load_img(filename))
         image = np.array(image, dtype=float)
-        column = len(image[0])
-        row = len(image)
+        column.append(len(image[0]))
+        row.append(len(image))
+        image = cv2.resize(image, (80,60))
         x = rgb2lab(1.0/255*image)[:,:,0]
         y = rgb2lab(1.0/255*image)[:,:,1:]
         y /= 128
@@ -68,11 +72,12 @@ def rgbtolab_batch(path):
     return X,Y,row,column
 
 #Convert LAB channels to RGB for a list of image
-def labtorgb_batch(l,a,b):
+def labtorgb_batch(l,a,b,row,column):
     rgb=[]
     for i in range(len(l)):
         lab=np.dstack([l[i],a[i],b[i]])
         img=color.lab2rgb(lab)
+        img = cv2.resize(img, (column[i],row[i]))
         rgb.append(img)
     return rgb
 
@@ -101,8 +106,8 @@ def load_image(image_path):
     # Pre-process the data by reshaping
     X=np.array(X)
     Y=np.array(Y)
-    X = X.reshape(n_test, row, column, 1)
-    Y = Y.reshape(n_test, row, column, 2)
+    X = X.reshape(n_test, 60, 80, 1)
+    Y = Y.reshape(n_test, 60, 80, 2)
     return X,Y,row,column
 
 #Load Model and Image - Colorization
@@ -114,12 +119,12 @@ def load_all(model_name,image_path):
     loaded_model.evaluate(X,Y,batch_size=10)
     Y_predict=loaded_model.predict(X)
     Y_predict *=128
-    Y_a=Y_predict[:,:,:,0].reshape(n_test,row,column,1)
-    Y_b=Y_predict[:,:,:,1].reshape(n_test,row,column,1)
-    Y_ori_a=Y[:,:,:,0].reshape(n_test,row,column,1)*128
-    Y_ori_b=Y[:,:,:,1].reshape(n_test,row,column,1)*128
-    rgb_list=labtorgb_batch(X,Y_a,Y_b)
-    rgb_original=labtorgb_batch(X,Y_ori_a,Y_ori_b)
+    Y_a=Y_predict[:,:,:,0].reshape(n_test,60,80,1)
+    Y_b=Y_predict[:,:,:,1].reshape(n_test,60,80,1)
+    Y_ori_a=Y[:,:,:,0].reshape(n_test,60,80,1)*128
+    Y_ori_b=Y[:,:,:,1].reshape(n_test,60,80,1)*128
+    rgb_list=labtorgb_batch(X,Y_a,Y_b,row,column)
+    rgb_original=labtorgb_batch(X,Y_ori_a,Y_ori_b,row,column)
     return rgb_list,rgb_original
 
 # =============================================================================
@@ -130,14 +135,14 @@ def load_all(model_name,image_path):
 # 2.1. Video Paths
 # =============================================================================
 VIDEO="Roman Holiday Short thumnail.mp4"
-bw_path = ".video\\b&w_video_frames\\"
-save_path = ".video\\colorized_video_frames\\"
-video_path = ".video\\colorized_video\\"
+bw_path = "video\\b&w_video_frames\\"
+save_path = "video\\colorized_video_frames\\"
+video_path = "video\\colorized_video\\"
 
 # =============================================================================
 # 2.2 Read video and convert to frames
 # =============================================================================
-video =  ".video\\"+VIDEO
+video = "video\\"+VIDEO
 width = 80
 vs = cv2.VideoCapture(video)
 
@@ -156,8 +161,8 @@ while success:
 
 	# resize the input frame, scale the pixel intensities to the
 	frame = imutils.resize(frame, 80)
-	#frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-	#frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
+	frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+	frame = cv2.cvtColor(frame, cv2.COLOR_GRAY2RGB)
 
 	# resize the frame to 80x60 (the dimensions of the  model
 	resized = cv2.resize(frame, (80, 60))
@@ -194,7 +199,7 @@ savePredict(colorized,save_path)
 ### a. Define function to create a video from frames
 def convert_frames_to_video(pathIn, pathOut, fps):
     frame_array = []
-    files = [f for f in os.listdir(pathIn) if isfile(join(pathIn, f))]
+    files = [f for f in os.listdir(pathIn) if isfile(join(pathIn, f)) and f.endswith(".jpg")==True] #If it's a valid path and exclude .DS_Store
 
     #for sorting the file names properly
     files.sort(key = lambda x: int(x[5:-4]))
@@ -221,3 +226,4 @@ pathIn= save_path
 pathOut = video_path+'video.avi'
 fps = 30.0
 convert_frames_to_video(pathIn, pathOut, fps)
+print("Colorized video is saved at {}".format(pathOut))

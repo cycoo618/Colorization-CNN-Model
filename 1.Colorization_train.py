@@ -81,7 +81,7 @@ def showRGB(img_list):
 
 def savePredict(img_list):
     for i in range(len(img_list)):
-        plt.imsave(("{}{}_predict{}.jpg").format(predict_path,i),datetime.today().strftime('%y%m%d-%h%m%s'),img_list[i])
+        plt.imsave("{}{}_predict{}.jpg".format(predict_path,i,datetime.today().strftime("%m%d%Y-%H%M%S")),img_list[i])
 
 # =============================================================================
 #  2. Some Paths
@@ -135,8 +135,11 @@ Y_test=np.array(Y_test)
 X_test = X_test.reshape(n_test, row, column, 1)
 Y_test = Y_test.reshape(n_test, row, column, 2)
 
-# Some hyper parameters
+#Some Hyperparameters
 n=6 #kernal size
+epoch=100 #epoch number
+validation=0.02 #validation split
+batch=10 #batch size
 
 # =============================================================================
 #  4. Build Model and Train
@@ -163,7 +166,7 @@ model.add(Conv2D(2, (n, n), activation='tanh', padding='same'))
 model.compile(optimizer='rmsprop',loss='mse',metrics=['accuracy'])
 
 # Fit model (training)
-model.fit(X, Y, validation_split=0.02, epochs=50, batch_size=10)
+model.fit(X, Y, validation_split=validation, epochs=epoch, batch_size=batch)
 
 # Evaluate the trained model on test batch
 model.evaluate(X_test,Y_test,batch_size=10)
@@ -197,7 +200,8 @@ savePredict(rgb_list)
 # =============================================================================
 model_json=model.to_json()
 
-with open("{}model_{}.json".format(predict_path,datetime.today().strftime('%y%m%d-%h%m%s')),"w") as json_file:
+with open("{}model_{}.json".format(model_path,datetime.today().strftime('%y%m%d-%h%m%s')),"w") as json_file:
     json_file.write(model_json)
 
-model.save_weights("{}model_{}.h5".format(predict_path,datetime.today().strftime('%y%m%d-%h%m%s')))
+model.save_weights("{}model_{}.h5".format(model_path,datetime.today().strftime('%y%m%d-%h%m%s')))
+print("Model and weights are saved here: {}".format(model_path))
